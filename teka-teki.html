@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>TEKA-TEKI</title>
+  <style>
+    :root{--bg:#f5f9ff;--card:#fff;--primary:#1e6fdf;--success:#1b5e20;--error:#b00020}
+    *{box-sizing:border-box}
+    body{margin:0; font-family:Inter,system-ui,Segoe UI,Roboto,Arial; background:linear-gradient(180deg,var(--bg),#eef6ff); min-height:100vh; display:flex; align-items:center; justify-content:center; padding:32px}
+    .card{background:var(--card); width:100%; max-width:700px; padding:28px; border-radius:12px; box-shadow:0 10px 30px rgba(30,50,90,0.06)}
+    h1{margin:0 0 12px; color:var(--primary); font-size:28px}
+    p.question{margin:14px 0; font-size:18px; color:#24354a}
+    .controls{display:flex; gap:10px; align-items:center}
+    input[type="text"]{flex:1; padding:12px 14px; border-radius:8px; border:1px solid #d6e6fb; font-size:16px}
+    button{padding:10px 14px; background:var(--primary); color:#fff; border:none; border-radius:8px; cursor:pointer; font-weight:600}
+    .feedback{margin-top:14px; font-weight:700}
+    .feedback.success{color:var(--success)}
+    .feedback.error{color:var(--error)}
+    @media (max-width:480px){body{padding:18px} h1{font-size:22px}}
+  </style>
+</head>
+<body>
+  <main class="card" role="main" aria-labelledby="page-title">
+    <h1 id="page-title">TEKA-TEKI</h1>
+
+    <p class="question">"Siapakah aku? Aku adalah seekor hewan. Kakiku ada empat. Ekorku panjang dibelakang. Berbulu dan memiliki belalai. Jawaban yang benar"</p>
+
+    <form id="quiz-form" class="controls" onsubmit="return false;" aria-label="Form teka-teki">
+      <input id="answer" name="answer" type="text" placeholder="Ketik jawaban di sini..." autocomplete="off" />
+      <button id="submit-btn" type="button">Jawab</button>
+    </form>
+
+    <div id="feedback" class="feedback" role="status" aria-live="polite"></div>
+  </main>
+
+  <script>
+    (function(){
+      const input = document.getElementById('answer');
+      const btn = document.getElementById('submit-btn');
+      const feedback = document.getElementById('feedback');
+
+      function checkAnswer(){
+        const raw = input.value || '';
+        const normalized = raw.trim().toLowerCase();
+
+        if(normalized === 'gajah'){
+          feedback.textContent = 'Hebat, Jawaban Anda BENAR';
+          feedback.classList.remove('error');
+          feedback.classList.add('success');
+        } else {
+          feedback.textContent = 'Jawaban ANda Salah, Silahkan Ulangi lagi';
+          feedback.classList.remove('success');
+          feedback.classList.add('error');
+        }
+      }
+
+      btn.addEventListener('click', checkAnswer);
+      input.addEventListener('keydown', function(e){
+        if(e.key === 'Enter'){
+          e.preventDefault();
+          checkAnswer();
+        }
+      });
+      window.addEventListener('load', () => input.focus());
+    })();
+  </script>
+</body>
+</html>
